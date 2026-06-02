@@ -7,7 +7,7 @@ export const AppContext = createContext()
 const AppContextProvider = (props) => {
 
     const currencySymbol = '₹'
-    const backendUrl = import.meta.env.VITE_BACKEND_URL
+    const backendUrl = 'https://riddhi-assurance-backend.onrender.com'
 
     const [doctors, setDoctors] = useState([])
     const [token, setToken] = useState(localStorage.getItem('token') ? localStorage.getItem('token') : '')
@@ -19,6 +19,7 @@ const AppContextProvider = (props) => {
         try {
 
             const { data } = await axios.get(backendUrl + '/api/doctor/list')
+
             if (data.success) {
                 setDoctors(data.doctors)
             } else {
@@ -37,7 +38,10 @@ const AppContextProvider = (props) => {
 
         try {
 
-            const { data } = await axios.get(backendUrl + '/api/user/get-profile', { headers: { token } })
+            const { data } = await axios.get(
+                backendUrl + '/api/user/get-profile',
+                { headers: { token } }
+            )
 
             if (data.success) {
                 setUserData(data.userData)
@@ -63,11 +67,15 @@ const AppContextProvider = (props) => {
     }, [token])
 
     const value = {
-        doctors, getDoctosData,
+        doctors,
+        getDoctosData,
         currencySymbol,
         backendUrl,
-        token, setToken,
-        userData, setUserData, loadUserProfileData
+        token,
+        setToken,
+        userData,
+        setUserData,
+        loadUserProfileData
     }
 
     return (
